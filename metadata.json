@@ -8,7 +8,7 @@
   "KPlugin": {
     "Id": "com.github.kettumatti.imagefetcher",
     "Name": "ImageFetcher",
-    "Description": "Displays and periodically refreshes online images on the desktop",
+    "Description": "Displays and periodically refreshes images on the desktop, supporting both online sources and local files",
     "Icon": "/imagefetcher.svg",
     "Authors": [
       { "Name": "Matti Kettunen" }
