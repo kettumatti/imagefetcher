@@ -1,0 +1,22 @@
+{
+  "KPackageStructure": "Plasma/Applet",
+  "X-Plasma-API-Minimum-Version": "6.0",
+  "X-Plasma-MainScript": "ui/main.qml",
+  "X-Plasma-ConfigScript": "config/config.qml",
+  "X-Plasma-DisableShortcutsConfig": true,
+  "X-Plasma-InitialSize": "600,400",
+  "KPlugin": {
+    "Id": "com.github.kettumatti.imagefetcher",
+    "Name": "ImageFetcher",
+    "Description": "Display online images on the desktop",
+    "Icon": "/imagefetcher.svg",
+    "Authors": [
+      { "Name": "Matti Kettunen" }
+    ],
+    "Version": "1.0.0",
+    "License": "GPL-3.0-or-later",
+    "Category": "Utilities",
+    "Website": "https://github.com/kettumatti/imagefetcher",
+    "BugReportUrl": "https://github.com/kettumatti/imagefetcher/issues"
+  }
+}

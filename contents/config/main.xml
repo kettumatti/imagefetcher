@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0">
+    <group name="General">
+        <entry name="imageUrls" type="StringList">
+            <label>URLs:</label>
+            <whatsthis>Where images can be downloaded.</whatsthis>
+            <default>https://placehold.net/600x400.png,https://placehold.net/600x400.png</default>
+        </entry>
+        <entry name="refreshInterval" type="Int">
+            <label>Refresh interval</label>
+            <default>10000</default>
+        </entry>
+    </group>
+</kcfg>
+
