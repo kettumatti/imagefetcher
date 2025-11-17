@@ -3,12 +3,12 @@
   "X-Plasma-API-Minimum-Version": "6.0",
   "X-Plasma-MainScript": "ui/main.qml",
   "X-Plasma-ConfigScript": "config/config.qml",
-  "X-Plasma-DisableShortcutsConfig": true,
+  "X-Plasma-ProvidesShortcuts": false,
   "X-Plasma-InitialSize": "600,400",
   "KPlugin": {
     "Id": "com.github.kettumatti.imagefetcher",
     "Name": "ImageFetcher",
-    "Description": "Display online images on the desktop",
+    "Description": "Displays and periodically refreshes online images on the desktop",
     "Icon": "/imagefetcher.svg",
     "Authors": [
       { "Name": "Matti Kettunen" }
