@@ -18,7 +18,7 @@ Supports both **singe** and **multiple** image sources.
 - kpackagetool6 (for installation)
 
 ## Installation
-1. Clone this repository (command line):
+1. Clone this repository:
 ```bash
 git clone https://github.com/kettumatti/imagefetcher.git
 ```
