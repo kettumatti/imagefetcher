@@ -6,6 +6,7 @@ Supports both **singe** and **multiple** image sources.
 
 ## Features
 - Display remote images (https://) or local images (file://)
+- Image can be zoomed if it's larger than window
 - Automatic periodic refresh
 - Multiple sources (switch image per refresh)
 - Works on Plasma 6 (includes correct metadata)
@@ -31,6 +32,7 @@ Supports both **singe** and **multiple** image sources.
 - Configure:
     - Add/remove image sources (URL or local file path)
     - Set refresh interval (in minutes or seconds)
+- Left click image to zoom (displays original size). Zoomed image can be dragged. 
 
 The applet will automatically reload the image(s) at the chosen interval.
 
