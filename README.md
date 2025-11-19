@@ -18,12 +18,11 @@ Supports both **singe** and **multiple** image sources.
 
 ## Installation
 1. Clone this repository (command line):
-    git clone https://github.com/kettumatti/imagefetcher.git
+- git clone https://github.com/kettumatti/imagefetcher.git
     
 2. Install applet
-
-    cd imagefetcher
-    kpackagetool6 --type Plasma/Applet --install ./
+- cd imagefetcher
+- kpackagetool6 --type Plasma/Applet --install ./
 
 3. Add the applet to your Plasma desktop via the widget menu.
 
