@@ -1,4 +1,4 @@
-# Plasma 6 Image Applet
+# ImageFetcher
 
 A **KDE Plasma 6 applet** that fetches and displays an image from a URL or local file.
 The image is automatically refreshed at a configurable interval.
