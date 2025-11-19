@@ -34,7 +34,7 @@ kpackagetool6 --type Plasma/Applet --install ./
 - Configure:
     - Add/remove image sources (URL or local file path)
     - Set refresh interval (in minutes or seconds)
-- Left click image to zoom (displays original size). Zoomed image can be dragged. 
+- Left click the image to zoom (displays original size). Zoomed image can be dragged. 
 
 The applet will automatically reload the image(s) at the chosen interval.
 
