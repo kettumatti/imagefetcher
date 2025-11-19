@@ -6,7 +6,7 @@ Supports both **singe** and **multiple** image sources.
 
 ## Features
 - Display remote images (https://) or local images (file://)
-- Image can be zoomed if it's larger than window
+- The image can be zoomed if it is larger than the applet window
 - Automatic periodic refresh
 - Multiple sources (switch image per refresh)
 - Works on Plasma 6 (includes correct metadata)
