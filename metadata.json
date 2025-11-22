@@ -2,7 +2,6 @@
   "KPackageStructure": "Plasma/Applet",
   "X-Plasma-API-Minimum-Version": "6.0",
   "X-Plasma-MainScript": "ui/main.qml",
-  "X-Plasma-ConfigScript": "config/config.qml",
   "X-Plasma-ProvidesShortcuts": false,
   "X-Plasma-InitialSize": "600,400",
   "KPlugin": {
@@ -20,6 +19,7 @@
     "BugReportUrl": "https://github.com/kettumatti/imagefetcher/issues"
   }
   "Config": {
+      "Main": "contents/ui/configGeneral.qml",
       "imageUrls": {
         "type": "StringList",
         "default": [

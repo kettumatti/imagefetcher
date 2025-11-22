@@ -2,7 +2,7 @@ import QtQuick 6.5
 import QtQuick.Controls 6.2 as Controls
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
-
+import org.kde.plasma.core as PlasmaCore
 
 Item {
     height: childrenRect.height
@@ -13,7 +13,7 @@ Item {
         Layout.fillWidth: true
         anchors.topMargin: 20
 
-        RowLayout {
+        Kirigami.FormRow {
             Kirigami.FormData.label: qsTr("Refresh interval")
 
             Controls.SpinBox {
