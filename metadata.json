@@ -12,7 +12,7 @@
     "Authors": [
       { "Name": "Matti Kettunen" }
     ],
-    "Version": "1.1.0",
+    "Version": "1.1.2",
     "License": "GPL-3.0-or-later",
     "Category": "Utilities",
     "Website": "https://github.com/kettumatti/imagefetcher",
