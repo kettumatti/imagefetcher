@@ -10,6 +10,7 @@ PlasmoidItem {
     property bool zoomed: false
     property real clickRatioX: 0.5
     property real clickRatioY: 0.5
+    property bool mouseOver: false
 
     compactRepresentation: Item {
         anchors.fill: parent
@@ -18,7 +19,9 @@ PlasmoidItem {
         HoverHandler {
             id: hoverHandler
             enabled: true
+
             onHoveredChanged: {
+                root.mouseOver = hovered
                 if (!hovered && root.zoomed) {
                     zoomResetTimer.restart()
                 } else {
@@ -162,7 +165,7 @@ PlasmoidItem {
             running: true
             repeat: true
             onTriggered: {
-                if (!root.zoomed && plasmoid.configuration.imageUrls
+                if (!root.zoomed && !root.mouseOver && plasmoid.configuration.imageUrls
                     && plasmoid.configuration.imageUrls.length > 0) {
                     root.currentIndex = (root.currentIndex + 1) % plasmoid.configuration.imageUrls.length
                     flickable.reloadImage()
