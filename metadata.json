@@ -19,4 +19,21 @@
     "Website": "https://github.com/kettumatti/imagefetcher",
     "BugReportUrl": "https://github.com/kettumatti/imagefetcher/issues"
   }
+  "Config": {
+      "imageUrls": {
+        "type": "StringList",
+        "default": [
+          "https://placehold.net/600x400.png",
+          "https://placehold.net/600x400.png"
+        ]
+      },
+      "refreshInterval": {
+        "type": "Int",
+        "default": 10000
+      },
+      "refreshUnitIndex": {
+        "type": "Int",
+        "default": 0
+      }
+    }
 }
