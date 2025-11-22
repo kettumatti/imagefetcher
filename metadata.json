@@ -29,7 +29,7 @@
       },
       "refreshInterval": {
         "type": "Int",
-        "default": 10000
+        "default": 60000
       },
       "refreshUnitIndex": {
         "type": "Int",
