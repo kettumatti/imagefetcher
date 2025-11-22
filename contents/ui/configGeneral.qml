@@ -19,37 +19,34 @@ Item {
             Controls.SpinBox {
                 id: refreshValue
                 from: 1; to: 3600; stepSize: 1
-                // Näytetään arvo sekunteina tai minuutteina riippuen unitista
                 value: plasmoid.configuration.refreshInterval /
                 (refreshUnit.currentIndex === 0 ? 1000 : 60000)
+
                 onValueChanged: {
-                    plasmoid.configuration.refreshInterval = refreshValue.value *
-                    (refreshUnit.currentIndex === 0 ? 1000 : 60000)
+                    plasmoid.configuration.refreshInterval =
+                    refreshValue.value * (refreshUnit.currentIndex === 0 ? 1000 : 60000)
                 }
             }
 
             Controls.ComboBox {
                 id: refreshUnit
                 model: [qsTr("seconds"), qsTr("minutes")]
-                currentIndex: plasmoid.configuration.refreshInterval >= 60000 ? 1 : 0
+
+                currentIndex: plasmoid.configuration.refreshUnitIndex || 0
 
                 onCurrentIndexChanged: {
-                    // Muunna SpinBoxin arvo uuteen yksikköön
+                    plasmoid.configuration.refreshUnitIndex = currentIndex
+
                     if (currentIndex === 0) {
-                        // minuutit → sekunnit
-                        refreshValue.value = refreshValue.value * 60
+                        refreshValue.value = plasmoid.configuration.refreshInterval / 1000
                     } else {
-                        // sekunnit → minuutit
-                        refreshValue.value = Math.round(refreshValue.value / 60)
+                        refreshValue.value = plasmoid.configuration.refreshInterval / 60000
                     }
-                    plasmoid.configuration.refreshInterval = refreshValue.value *
-                    (currentIndex === 0 ? 1000 : 60000)
                 }
             }
         }
 
-
-        // Uuden URLin lisääminen
+        // Add new URL
         Kirigami.ActionTextField {
             Kirigami.FormData.label: qsTr("Add new URL")
             placeholderText: qsTr("https://... file://...")
@@ -76,7 +73,7 @@ Item {
                     text: modelData
                     Layout.fillWidth: true
 
-                    // Päivitä listaan, mutta estä Enterin propagointi dialogille
+                    // Update the list but don't close the window after pressing Enter
                     onTextChanged: {
                         var list = plasmoid.configuration.imageUrls
                         list[index] = text
