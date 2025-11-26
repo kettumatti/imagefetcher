@@ -17,7 +17,7 @@
     "Category": "Utilities",
     "Website": "https://github.com/kettumatti/imagefetcher",
     "BugReportUrl": "https://github.com/kettumatti/imagefetcher/issues"
-  }
+  },
   "Config": {
       "Main": "contents/ui/configGeneral.qml",
       "imageUrls": {
