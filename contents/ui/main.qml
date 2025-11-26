@@ -2,6 +2,7 @@ import QtQuick 6.5
 import org.kde.plasma.plasmoid
 import QtQuick.Controls 6.5
 
+
 PlasmoidItem {
     id: root
     width: 300
@@ -11,6 +12,36 @@ PlasmoidItem {
     property real clickRatioX: 0.5
     property real clickRatioY: 0.5
     property bool mouseOver: false
+    property bool lastLoadOk: false
+
+
+    Item {
+        id: errorOverlay
+        anchors.centerIn: parent
+        visible: false
+        z: 10
+        width: parent.width * 0.8
+
+        Rectangle {
+            anchors.fill: parent
+            color: "#c62828"
+            opacity: 0.8
+            radius: 6
+
+            Text {
+                id: errorText
+                anchors.margins: 8
+                anchors.fill: parent
+                text: qsTr("Failed to load image")
+                color: "white"
+                font.bold: true
+                wrapMode: Text.WrapAnywhere   
+            }
+        }
+
+        // Rectangle height adjusted according to wrapped text
+        height: errorText.paintedHeight + 16
+    }
 
     compactRepresentation: Item {
         anchors.fill: parent
@@ -49,7 +80,7 @@ PlasmoidItem {
                 height: root.zoomed
                 ? Math.max(oldImg.implicitHeight, 1)
                 : flickable.height
-
+                
                 // Visible image
                 Image {
                     id: oldImg
@@ -67,7 +98,7 @@ PlasmoidItem {
 
                     onStatusChanged: {
                         if (status === Image.Ready && root.zoomed) {
-                            // Päivitä content-mitat varmuuden vuoksi
+                            // Update content width and height
                             content.width = Math.max(implicitWidth, 1)
                             content.height = Math.max(implicitHeight, 1)
                         }
@@ -92,7 +123,25 @@ PlasmoidItem {
                             visible = true
                     }
 
-                    onStatusChanged: if (status === Image.Ready) fadeIn.start()
+                    // onStatusChanged: if (status === Image.Ready) fadeIn.start()
+                    onStatusChanged: {
+                        if (status === Image.Ready) {
+                            // errorOverlay.visible = false
+                            lastLoadOk = true
+                            fadeIn.start()
+                            retryTimer.stop()
+                            refreshTimer.start()
+                        } else if (status === Image.Error) {
+                            lastLoadOk = false
+                            errorOverlay.visible = true
+                            errorText.text = qsTr("Failed to load image: ") + plasmoid.configuration.imageUrls[root.currentIndex]
+
+                            errorMessageDelay.start()
+                            // errorLabel.visible = false
+                            
+                            flickable.tryNextImage()
+                        }
+                    }
 
                     SequentialAnimation {
                         id: fadeIn
@@ -111,11 +160,13 @@ PlasmoidItem {
                     }
                 }
             }
-
-            function reloadImage() {
+            
+            function tryNextImage() {
                 if (!plasmoid.configuration.imageUrls || plasmoid.configuration.imageUrls.length === 0)
-                    return
-                    newImg.updateSource(plasmoid.configuration.imageUrls[root.currentIndex])
+                    return;
+
+                root.currentIndex = (root.currentIndex + 1) % plasmoid.configuration.imageUrls.length;
+                newImg.updateSource(plasmoid.configuration.imageUrls[root.currentIndex]);
             }
 
             MouseArea {
@@ -159,17 +210,25 @@ PlasmoidItem {
         }
 
         // Image update
-        Timer {
+        Timer { // refreshTimer
             id: refreshTimer
             interval: plasmoid.configuration.refreshInterval
             running: true
             repeat: true
             onTriggered: {
-                if (!root.zoomed && !root.mouseOver && plasmoid.configuration.imageUrls
-                    && plasmoid.configuration.imageUrls.length > 0) {
-                    root.currentIndex = (root.currentIndex + 1) % plasmoid.configuration.imageUrls.length
-                    flickable.reloadImage()
-                    }
+                if (!root.zoomed && !root.mouseOver) {
+                    flickable.tryNextImage()
+                }
+            }
+        }
+
+        Timer { // retryTimer
+            id: retryTimer
+            interval: 10000
+            repeat: true
+            running: false
+            onTriggered: {
+                flickable.tryNextImage()
             }
         }
 
@@ -184,6 +243,14 @@ PlasmoidItem {
                 content.height = flickable.height
                 flickable.contentX = 0
                 flickable.contentY = 0
+            }
+        }
+        Timer {
+            id: errorMessageDelay
+            interval: 5000 
+            repeat: false
+            onTriggered: {
+                errorOverlay.visible = false
             }
         }
 
