@@ -1,60 +1,137 @@
 import QtQuick 6.5
-import QtQuick.Controls 6.2 as Controls
 import QtQuick.Layouts
-import org.kde.kirigami as Kirigami
-import org.kde.plasma.core as PlasmaCore
+import QtQuick.Controls 6.5 as QQC2
+import org.kde.kcmutils as KCM
 
-Item {
-    height: childrenRect.height
+KCM.SimpleKCM {
+    id: root
+    implicitWidth: 600
+    implicitHeight: childrenRect.height
 
-    Kirigami.FormLayout {
+    ColumnLayout {
         anchors.fill: parent
-        wideMode: true
+        anchors.margins: 20
+        spacing: 12
         Layout.fillWidth: true
-        anchors.topMargin: 20
+        Layout.alignment: Qt.AlignTop
 
-        Kirigami.FormRow {
-            Kirigami.FormData.label: qsTr("Refresh interval")
+        // Refresh interval
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 6
+            Layout.alignment: Qt.AlignTop
 
-            Controls.SpinBox {
+            QQC2.Label {
+                text: qsTr("Refresh interval")
+                Layout.preferredWidth: 150
+                Layout.alignment: Qt.AlignTop
+            }
+
+            QQC2.SpinBox {
                 id: refreshValue
                 from: 1; to: 3600; stepSize: 1
+                Layout.preferredWidth: 100
+                Layout.alignment: Qt.AlignTop
                 value: plasmoid.configuration.refreshInterval /
-                (refreshUnit.currentIndex === 0 ? 1000 : 60000)
-
+                       (refreshUnit.currentIndex === 0 ? 1000 : 60000)
                 onValueChanged: {
                     plasmoid.configuration.refreshInterval =
-                    refreshValue.value * (refreshUnit.currentIndex === 0 ? 1000 : 60000)
+                        refreshValue.value * (refreshUnit.currentIndex === 0 ? 1000 : 60000)
                 }
             }
 
-            Controls.ComboBox {
+            QQC2.ComboBox {
                 id: refreshUnit
+                Layout.preferredWidth: 100
+                Layout.alignment: Qt.AlignTop
                 model: [qsTr("seconds"), qsTr("minutes")]
-
                 currentIndex: plasmoid.configuration.refreshUnitIndex || 0
 
                 onCurrentIndexChanged: {
                     plasmoid.configuration.refreshUnitIndex = currentIndex
-
-                    if (currentIndex === 0) {
-                        refreshValue.value = plasmoid.configuration.refreshInterval / 1000
-                    } else {
-                        refreshValue.value = plasmoid.configuration.refreshInterval / 60000
-                    }
+                    refreshValue.value = plasmoid.configuration.refreshInterval /
+                        (currentIndex === 0 ? 1000 : 60000)
                 }
             }
         }
 
-        // Add new URL
-        Kirigami.ActionTextField {
-            Kirigami.FormData.label: qsTr("Add new URL")
-            placeholderText: qsTr("https://... file://...")
-            onAccepted: {
-                var list = plasmoid.configuration.imageUrls || []
-                list.push(text.trim())
-                plasmoid.configuration.imageUrls = list
-                text = ""
+        ColumnLayout {
+            spacing: 6
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
+
+            // Add new URL
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignTop
+                spacing: 6
+
+                QQC2.Label {
+                    text: qsTr("Add new URL")
+                    Layout.preferredWidth: 150
+                    Layout.alignment: Qt.AlignTop
+                }
+
+                QQC2.TextField {
+                    id: newUrl
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignTop
+                    placeholderText: qsTr("https://... file://... The URL will be added to the list once you hit Enter.")
+                    onAccepted: {
+                        var list = plasmoid.configuration.imageUrls || []
+                        list.push(text.trim())
+                        plasmoid.configuration.imageUrls = list
+                        text = ""
+                    }
+                }
+            }
+
+            //QQC2.Label {
+            //    text: qsTr("The URL will be added to the list once you hit Enter.")
+            //    wrapMode: Text.WordWrap
+            //    Layout.fillWidth: true
+            //}
+
+        
+            QQC2.Label {
+                text: qsTr("Image URLs:")
+                wrapMode: Text.WordWrap
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignTop
+            }
+            
+            Repeater {
+                model: plasmoid.configuration.imageUrls || []
+
+                delegate: RowLayout {
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignTop
+                    spacing: 6
+                    
+                    QQC2.TextField {
+                        text: modelData
+                        Layout.fillWidth: true
+                        Layout.minimumWidth: 100
+                        Layout.maximumWidth: 1000
+                        Layout.alignment: Qt.AlignTop
+                        onTextChanged: {
+                            var list = plasmoid.configuration.imageUrls
+                            list[index] = text
+                            plasmoid.configuration.imageUrls = list
+                        }
+                    }
+
+                    QQC2.Button {
+                        icon.name: "user-trash"
+                        implicitWidth: 30
+                        Layout.alignment: Qt.AlignTop
+                        onClicked: {
+                            var list = plasmoid.configuration.imageUrls
+                            list.splice(index, 1)
+                            plasmoid.configuration.imageUrls = list
+                        }
+                    }
+                }
             }
         }
 
@@ -63,43 +140,5 @@ Item {
                 event.accepted = true
             }
         }
-
-        Repeater {
-            model: plasmoid.configuration.imageUrls || []
-            delegate: RowLayout {
-                spacing: 6
-                Layout.fillWidth: true
-                Controls.TextField {
-                    text: modelData
-                    Layout.fillWidth: true
-
-                    // Update the list but don't close the window after pressing Enter
-                    onTextChanged: {
-                        var list = plasmoid.configuration.imageUrls
-                        list[index] = text
-                        plasmoid.configuration.imageUrls = list
-                    }
-                }
-
-                Controls.Button {
-                    icon.name: "user-trash"
-                    // text: qsTr("✕")
-                    implicitWidth: 24
-                    onClicked: {
-                        var list = plasmoid.configuration.imageUrls
-                        list.splice(index, 1)
-                        plasmoid.configuration.imageUrls = list
-                    }
-                }
-            }
-        }
-        Controls.Label {
-
-            text: qsTr("\nThe URL will be added to the list once you hit Enter.")
-            wrapMode: Text.WordWrap
-            Layout.fillWidth: true
-        }
-
     }
-
 }

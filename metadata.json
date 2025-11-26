@@ -7,33 +7,16 @@
   "KPlugin": {
     "Id": "com.github.kettumatti.imagefetcher",
     "Name": "ImageFetcher",
-    "Description": "Displays and periodically refreshes images on the desktop, supporting both online sources and local files",
+    "Description": "Displays and periodically refreshes images on the desktop",
     "Icon": "/imagefetcher.svg",
     "Authors": [
       { "Name": "Matti Kettunen" }
     ],
-    "Version": "1.1.2",
+    "Version": "1.2.0",
     "License": "GPL-3.0-or-later",
     "Category": "Utilities",
     "Website": "https://github.com/kettumatti/imagefetcher",
     "BugReportUrl": "https://github.com/kettumatti/imagefetcher/issues"
-  },
-  "Config": {
-      "Main": "contents/ui/configGeneral.qml",
-      "imageUrls": {
-        "type": "StringList",
-        "default": [
-          "https://placehold.net/600x400.png",
-          "https://placehold.net/600x400.png"
-        ]
-      },
-      "refreshInterval": {
-        "type": "Int",
-        "default": 60000
-      },
-      "refreshUnitIndex": {
-        "type": "Int",
-        "default": 0
-      }
-    }
+  }
+  
 }
