@@ -76,7 +76,7 @@ KCM.SimpleKCM {
                     id: newUrl
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignTop
-                    placeholderText: qsTr("https://... file://... The URL will be added to the list once you hit Enter.")
+                    placeholderText: qsTr("https://... file:///... The URL will be added to the list once you hit Enter.")
                     onAccepted: {
                         var list = plasmoid.configuration.imageUrls || []
                         list.push(text.trim())
