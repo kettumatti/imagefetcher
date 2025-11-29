@@ -5,7 +5,8 @@ import QtQuick.Controls 6.5
 
 PlasmoidItem {
     id: root
-    width: 300
+    implicitWidth: 600
+    implicitHeight: 400
 
     property int currentIndex: 0
     property bool zoomed: false
