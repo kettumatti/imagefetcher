@@ -171,9 +171,15 @@ PlasmoidItem {
 
             MouseArea {
                 anchors.fill: parent
-                acceptedButtons: Qt.LeftButton
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
                 cursorShape: Qt.PointingHandCursor
                 onClicked: function(mouse) {
+
+                    if (mouse.button === Qt.RightButton) {
+                        flickable.tryNextImage()
+                        return
+                    }
+
                     clickRatioX = mouse.x / flickable.width
                     clickRatioY = mouse.y / flickable.height
 
