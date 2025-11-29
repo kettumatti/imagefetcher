@@ -172,11 +172,16 @@ PlasmoidItem {
 
             MouseArea {
                 anchors.fill: parent
-                acceptedButtons: Qt.LeftButton | Qt.RightButton
+                acceptedButtons: Qt.LeftButton | Qt.MiddleButton
                 cursorShape: Qt.PointingHandCursor
+
+                onWheel: {
+                    flickable.tryNextImage()
+                }
+
                 onClicked: function(mouse) {
 
-                    if (mouse.button === Qt.RightButton) {
+                    if (mouse.button === Qt.MiddleButton) {
                         flickable.tryNextImage()
                         return
                     }
