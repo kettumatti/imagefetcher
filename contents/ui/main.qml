@@ -161,7 +161,7 @@ PlasmoidItem {
                     }
                 }
             }
-            
+
             function tryNextImage() {
                 if (!plasmoid.configuration.imageUrls || plasmoid.configuration.imageUrls.length === 0)
                     return;
@@ -170,13 +170,30 @@ PlasmoidItem {
                 newImg.updateSource(plasmoid.configuration.imageUrls[root.currentIndex]);
             }
 
+            function tryPrevImage() {
+                if (!plasmoid.configuration.imageUrls || plasmoid.configuration.imageUrls.length === 0)
+                    return;
+
+                const len = plasmoid.configuration.imageUrls.length;
+                root.currentIndex = (root.currentIndex - 1 + len) % len;
+                newImg.updateSource(plasmoid.configuration.imageUrls[root.currentIndex]);
+            }
+
             MouseArea {
                 anchors.fill: parent
                 acceptedButtons: Qt.LeftButton | Qt.MiddleButton
                 cursorShape: Qt.PointingHandCursor
+                hoverEnabled: true
 
-                onWheel: {
-                    flickable.tryNextImage()
+                onWheel: function(wheel) {
+                    if (!root.zoomed) {
+                        if (wheel.angleDelta.y < 0) {
+                            flickable.tryNextImage()
+                        } else {
+                            flickable.tryPrevImage()
+                        }
+                        wheel.accepted = true
+                    }
                 }
 
                 onClicked: function(mouse) {
