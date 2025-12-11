@@ -237,6 +237,29 @@ PlasmoidItem {
 
 
         }
+        
+        Timer {
+        id: wakeChecker
+            interval: 20000     // tarkistetaan 20s välein
+            running: true
+            repeat: true
+
+            property double lastTime: Date.now()
+
+            onTriggered: {
+                let now = Date.now()
+                let diff = now - lastTime
+
+                // Jos aika hyppäsi yli 3 minuuttia,
+                // kone on todennäköisesti herännyt horroksesta
+                if (diff > 3 * 60 * 1000) {
+                    flickable.tryNextImage()
+                }
+
+                lastTime = now
+            }
+        }
+
 
         // Image update
         Timer { // refreshTimer
