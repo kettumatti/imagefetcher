@@ -126,7 +126,6 @@ PlasmoidItem {
                             visible = true
                     }
 
-                    // onStatusChanged: if (status === Image.Ready) fadeIn.start()
                     onStatusChanged: {
                         if (status === Image.Ready) {
                             // errorOverlay.visible = false
@@ -140,8 +139,7 @@ PlasmoidItem {
                             errorText.text = qsTr("Failed to load image: ") + plasmoid.configuration.imageUrls[root.currentIndex]
 
                             errorMessageDelay.start()
-                            // errorLabel.visible = false
-                            
+
                             flickable.tryNextImage()
                         }
                     }
@@ -242,7 +240,7 @@ PlasmoidItem {
         
         Timer {
         id: wakeChecker
-            interval: 20000     // tarkistetaan 20s välein
+            interval: 20000
             running: true
             repeat: true
 
@@ -252,8 +250,7 @@ PlasmoidItem {
                 let now = Date.now()
                 let diff = now - lastTime
 
-                // Jos aika hyppäsi yli 3 minuuttia,
-                // kone on todennäköisesti herännyt horroksesta
+                // If difference is more than 3 minutes -> system was woken up from suspend/hibernate.
                 if (diff > 3 * 60 * 1000) {
                     flickable.tryNextImage()
                 }
@@ -326,19 +323,4 @@ PlasmoidItem {
                 compactRepresentation.flickable.reloadImage()
         }
     }
-
-    /* Connections {
-        target: plasmoid.configuration
-
-        onImageUrlsChanged: {
-            root.currentIndex = 0
-            if (compactRepresentation.flickable)
-                compactRepresentation.flickable.reloadImage()
-        }
-
-        onRefreshIntervalChanged: {
-            if (compactRepresentation.flickable)
-                compactRepresentation.flickable.reloadImage()
-        }
-    } */
 }
