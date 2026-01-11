@@ -85,6 +85,7 @@ PlasmoidItem {
                 // Visible image
                 Image {
                     id: oldImg
+                    cache: true
                     x: 0; y: 0
                     width: root.zoomed ? Math.max(implicitWidth, 1) : content.width
                     height: root.zoomed ? Math.max(implicitHeight, 1) : content.height
@@ -109,6 +110,7 @@ PlasmoidItem {
                 // New image to fade-in
                 Image {
                     id: newImg
+                    cache: true
                     x: 0; y: 0
                     width: root.zoomed ? Math.max(implicitWidth, 1) : content.width
                     height: root.zoomed ? Math.max(implicitHeight, 1) : content.height
@@ -313,6 +315,21 @@ PlasmoidItem {
     Connections {
         target: plasmoid.configuration
 
+        function onImageUrlsChanged() {
+            root.currentIndex = 0
+            if (compactRepresentation.flickable)
+                compactRepresentation.flickable.reloadImage()
+        }
+
+        function onRefreshIntervalChanged() {
+            if (compactRepresentation.flickable)
+                compactRepresentation.flickable.reloadImage()
+        }
+    }
+
+    /* Connections {
+        target: plasmoid.configuration
+
         onImageUrlsChanged: {
             root.currentIndex = 0
             if (compactRepresentation.flickable)
@@ -323,5 +340,5 @@ PlasmoidItem {
             if (compactRepresentation.flickable)
                 compactRepresentation.flickable.reloadImage()
         }
-    }
+    } */
 }
