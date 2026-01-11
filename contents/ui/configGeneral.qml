@@ -26,33 +26,44 @@ KCM.SimpleKCM {
                 Layout.preferredWidth: 150
                 Layout.alignment: Qt.AlignTop
             }
-
-            QQC2.SpinBox {
+           
+           QQC2.SpinBox {
                 id: refreshValue
                 from: 1; to: 3600; stepSize: 1
                 Layout.preferredWidth: 100
                 Layout.alignment: Qt.AlignTop
+
                 value: plasmoid.configuration.refreshInterval /
-                       (refreshUnit.currentIndex === 0 ? 1000 : 60000)
+                    (plasmoid.configuration.refreshUnitIndex === 0 ? 1000 : 60000)
+
                 onValueChanged: {
                     plasmoid.configuration.refreshInterval =
-                        refreshValue.value * (refreshUnit.currentIndex === 0 ? 1000 : 60000)
+                        value * (plasmoid.configuration.refreshUnitIndex === 0 ? 1000 : 60000)
                 }
             }
-
-            QQC2.ComboBox {
+           
+           QQC2.ComboBox {
                 id: refreshUnit
                 Layout.preferredWidth: 100
                 Layout.alignment: Qt.AlignTop
                 model: [qsTr("seconds"), qsTr("minutes")]
-                currentIndex: plasmoid.configuration.refreshUnitIndex || 0
+
+                currentIndex: plasmoid.configuration.refreshUnitIndex
 
                 onCurrentIndexChanged: {
+                    const oldIndex = plasmoid.configuration.refreshUnitIndex
+                    if (oldIndex === currentIndex)
+                        return
+
+                    const oldFactor = (oldIndex === 0 ? 1000 : 60000)
+                    const newFactor = (currentIndex === 0 ? 1000 : 60000)
+                    const logical = plasmoid.configuration.refreshInterval / oldFactor
+
                     plasmoid.configuration.refreshUnitIndex = currentIndex
-                    refreshValue.value = plasmoid.configuration.refreshInterval /
-                        (currentIndex === 0 ? 1000 : 60000)
+                    plasmoid.configuration.refreshInterval = logical * newFactor
                 }
             }
+
         }
 
         ColumnLayout {
@@ -76,7 +87,7 @@ KCM.SimpleKCM {
                     id: newUrl
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignTop
-                    placeholderText: qsTr("https://... file:///... The URL will be added to the list once you hit Enter.")
+                    placeholderText: qsTr("https://... file:///... Press Enter to add.")
                     onAccepted: {
                         var list = plasmoid.configuration.imageUrls || []
                         list.push(text.trim())
@@ -85,14 +96,7 @@ KCM.SimpleKCM {
                     }
                 }
             }
-
-            //QQC2.Label {
-            //    text: qsTr("The URL will be added to the list once you hit Enter.")
-            //    wrapMode: Text.WordWrap
-            //    Layout.fillWidth: true
-            //}
-
-        
+       
             QQC2.Label {
                 text: qsTr("Image URLs:")
                 wrapMode: Text.WordWrap
